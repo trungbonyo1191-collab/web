@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Công cụ PDF của bạn - 100% Miễn Phí & Bảo Mật</title>
+    <title>Công cụ Tài liệu & PDF - 100% Miễn Phí & Bảo Mật</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- 1. PDF.js (Apache 2.0) -->
@@ -28,17 +28,23 @@
         <!-- HEADER -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-3xl font-bold text-slate-900">Công cụ PDF của bạn</h1>
-                <p class="text-slate-500 mt-1">Chọn một công cụ, tải tài liệu lên và nhận kết quả chỉ trong vài bước.</p>
+                <h1 class="text-3xl font-bold text-slate-900">Trạm Công Cụ Đa Năng</h1>
+                <p class="text-slate-500 mt-1">Xử lý tài liệu PDF, chuyển đổi ảnh nhanh chóng ngay trên trình duyệt.</p>
             </div>
             <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-semibold px-3.5 py-2 rounded-full self-start">
-                <span>🔒 Xử lý trực tiếp trên trình duyệt — An toàn 100%</span>
+                <span>🔒 Xử lý trực tiếp trên máy — An toàn 100%</span>
             </div>
         </div>
 
-        <!-- LƯỚI 6 CÔNG CỤ -->
+        <!-- LƯỚI 7 CÔNG CỤ -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <button onclick="selectTool('word')" id="card-word" class="tool-card active text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+            <button onclick="selectTool('img2pdf')" id="card-img2pdf" class="tool-card active text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl mb-3">📁</div>
+                <h3 class="font-bold text-slate-900 text-base">Ảnh sang PDF (Gộp nhiều ảnh)</h3>
+                <p class="text-xs text-slate-500 mt-1">Chọn nhiều ảnh (JPG, PNG, WebP) để gộp thành 1 file PDF.</p>
+            </button>
+
+            <button onclick="selectTool('word')" id="card-word" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
                 <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mb-3">📝</div>
                 <h3 class="font-bold text-slate-900 text-base">PDF sang Word</h3>
                 <p class="text-xs text-slate-500 mt-1">Chuyển tài liệu PDF thành tệp DOCX có thể chỉnh sửa.</p>
@@ -53,7 +59,7 @@
             <button onclick="selectTool('image')" id="card-image" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
                 <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-3">🖼️</div>
                 <h3 class="font-bold text-slate-900 text-base">PDF sang hình ảnh</h3>
-                <p class="text-xs text-slate-500 mt-1">Xuất từng trang thành ảnh PNG, đóng gói ZIP.</p>
+                <p class="text-xs text-slate-500 mt-1">Xuất từng trang PDF thành ảnh PNG, đóng gói ZIP.</p>
             </button>
 
             <button onclick="selectTool('merge')" id="card-merge" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
@@ -77,13 +83,13 @@
 
         <!-- KHUNG THAO TÁC CHI TIẾT -->
         <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
-            <h2 id="panel-title" class="text-xl font-bold text-slate-900">PDF sang Word</h2>
-            <p id="panel-desc" class="text-sm text-slate-500 mt-1 mb-5">Trích xuất nội dung từ file PDF và tạo tệp Word (.docx) tải về ngay lập tức.</p>
+            <h2 id="panel-title" class="text-xl font-bold text-slate-900">Ảnh sang PDF (Gộp nhiều ảnh)</h2>
+            <p id="panel-desc" class="text-sm text-slate-500 mt-1 mb-5">Chọn nhiều bức ảnh từ thiết bị của bạn để gộp chung thành một tệp PDF duy nhất.</p>
 
             <!-- Vùng chọn file -->
             <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-blue-500 transition bg-slate-50/50">
-                <input type="file" id="pdfInput" accept="application/pdf" class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mx-auto max-w-md">
-                <p id="file-hint" class="text-xs text-slate-400 mt-2">Chọn 1 tệp PDF từ máy tính của bạn</p>
+                <input type="file" id="fileInput" accept="image/*" multiple class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mx-auto max-w-md">
+                <p id="file-hint" class="text-xs text-slate-400 mt-2">Giữ phím Ctrl (hoặc Cmd) để chọn nhiều ảnh cùng lúc</p>
             </div>
 
             <!-- Tùy chọn riêng cho Tách PDF -->
@@ -113,45 +119,57 @@
     </div>
 
     <script>
-        // Cấu hình Worker cho PDF.js
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        let currentTool = 'word';
+        let currentTool = 'img2pdf';
 
         const toolInfo = {
+            img2pdf: {
+                title: 'Ảnh sang PDF (Gộp nhiều ảnh)',
+                desc: 'Chọn nhiều bức ảnh từ thiết bị của bạn để gộp chung thành một tệp PDF duy nhất.',
+                accept: 'image/*',
+                multiple: true,
+                hint: 'Giữ phím Ctrl (hoặc Cmd) để chọn nhiều ảnh cùng lúc'
+            },
             word: {
                 title: 'PDF sang Word',
                 desc: 'Chuyển đổi văn bản từ tài liệu PDF sang định dạng Microsoft Word (.docx).',
+                accept: 'application/pdf',
                 multiple: false,
                 hint: 'Chọn 1 tệp PDF để chuyển sang Word'
             },
             excel: {
                 title: 'PDF sang Excel',
                 desc: 'Trích xuất các dòng dữ liệu từ PDF thành bảng tính Excel (.xlsx).',
+                accept: 'application/pdf',
                 multiple: false,
                 hint: 'Chọn 1 tệp PDF chứa bảng hoặc danh sách dữ liệu'
             },
             image: {
                 title: 'PDF sang hình ảnh (PNG + ZIP)',
                 desc: 'Chuyển toàn bộ các trang PDF thành ảnh PNG sắc nét và nén thành file ZIP.',
+                accept: 'application/pdf',
                 multiple: false,
                 hint: 'Chọn 1 tệp PDF để xuất ảnh từng trang'
             },
             merge: {
                 title: 'Gộp PDF',
                 desc: 'Chọn nhiều file PDF cùng lúc để ghép nối thành 1 file hoàn chỉnh.',
+                accept: 'application/pdf',
                 multiple: true,
                 hint: 'Giữ phím Ctrl (hoặc Cmd) để chọn nhiều tệp PDF cùng lúc'
             },
             split: {
                 title: 'Tách PDF',
                 desc: 'Trích xuất các trang cần thiết ra thành một tệp PDF mới.',
+                accept: 'application/pdf',
                 multiple: false,
                 hint: 'Chọn 1 tệp PDF và nhập số trang bên dưới'
             },
             compress: {
                 title: 'Nén PDF',
                 desc: 'Giảm dung lượng tệp PDF. Mức nén cao có thể làm giảm độ nét của hình ảnh.',
+                accept: 'application/pdf',
                 multiple: false,
                 hint: 'Chọn 1 tệp PDF cần giảm dung lượng'
             }
@@ -167,8 +185,9 @@
             document.getElementById('panel-desc').innerText = info.desc;
             document.getElementById('file-hint').innerText = info.hint;
 
-            const input = document.getElementById('pdfInput');
+            const input = document.getElementById('fileInput');
             input.value = '';
+            input.accept = info.accept;
             input.multiple = info.multiple;
 
             document.getElementById('opt-split').classList.toggle('hidden', tool !== 'split');
@@ -192,9 +211,9 @@
         }
 
         async function runTool() {
-            const input = document.getElementById('pdfInput');
+            const input = document.getElementById('fileInput');
             if (!input.files || input.files.length === 0) {
-                alert('Vui lòng chọn tệp PDF trước!');
+                alert('Vui lòng chọn tệp trước!');
                 return;
             }
 
@@ -203,7 +222,8 @@
             btn.classList.add('opacity-50');
 
             try {
-                if (currentTool === 'word') await handlePdfToWord(input.files[0]);
+                if (currentTool === 'img2pdf') await handleImagesToPdf(input.files);
+                else if (currentTool === 'word') await handlePdfToWord(input.files[0]);
                 else if (currentTool === 'excel') await handlePdfToExcel(input.files[0]);
                 else if (currentTool === 'image') await handlePdfToImages(input.files[0]);
                 else if (currentTool === 'merge') await handleMergePdf(input.files);
@@ -216,6 +236,51 @@
                 btn.disabled = false;
                 btn.classList.remove('opacity-50');
             }
+        }
+
+        // 0. ẢNH SANG PDF (GỘP NHIỀU ẢNH)
+        async function handleImagesToPdf(files) {
+            setStatus('⏳ Đang chuyển đổi và gộp ảnh thành PDF...');
+            const pdfDoc = await PDFLib.PDFDocument.create();
+
+            for (let i = 0; i < files.length; i++) {
+                setStatus(`⏳ Đang xử lý ảnh ${i + 1}/${files.length}...`);
+                const file = files[i];
+                const imageBytes = await file.arrayBuffer();
+                
+                // Đọc ảnh qua canvas để hỗ trợ mọi định dạng (JPG, PNG, WebP)
+                const jpgBytes = await new Promise((resolve, reject) => {
+                    const blob = new Blob([imageBytes]);
+                    const url = URL.createObjectURL(blob);
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        canvas.toBlob((b) => {
+                            b.arrayBuffer().then(resolve).catch(reject);
+                        }, 'image/jpeg', 0.9);
+                    };
+                    img.onerror = reject;
+                    img.src = url;
+                });
+
+                const embeddedImage = await pdfDoc.embedJpg(jpgBytes);
+                const dims = embeddedImage.scale(1);
+                const page = pdfDoc.addPage([dims.width, dims.height]);
+                page.drawImage(embeddedImage, {
+                    x: 0,
+                    y: 0,
+                    width: dims.width,
+                    height: dims.height,
+                });
+            }
+
+            const pdfBytes = await pdfDoc.save();
+            downloadBlob(new Blob([pdfBytes], { type: 'application/pdf' }), 'gop-nhieu-anh.pdf');
+            setStatus('✅ Đã gộp thành công tất cả ảnh thành file PDF!');
         }
 
         // 1. PDF SANG WORD (DOCX)
@@ -251,7 +316,6 @@
             for (let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
                 const textContent = await page.getTextContent();
-                // Gom chữ theo tọa độ Y (cùng dòng)
                 const lineMap = {};
                 textContent.items.forEach(item => {
                     const y = Math.round(item.transform[5]);

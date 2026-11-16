@@ -3,112 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Công Cụ Miễn Phí - Xử lý Ảnh & PDF</title>
-    <!-- Tailwind CSS cho giao diện đẹp, miễn phí -->
+    <title>Công cụ PDF của bạn - 100% Miễn Phí & Bảo Mật</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Compressor.js (Giấy phép MIT - Chuyên nén và đổi đuôi ảnh) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.2.1/compressor.min.js"></script>
-    <!-- pdf-lib (Giấy phép MIT - Xử lý PDF trên trình duyệt) -->
-    <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
+    
+    <!-- 1. PDF.js (Apache 2.0) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- 2. pdf-lib (MIT) -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <!-- 3. JSZip (MIT) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- 4. docx.js (MIT) -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <!-- 5. SheetJS / xlsx (Apache 2.0) -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
+    <style>
+        .tool-card { transition: all 0.2s ease; }
+        .tool-card.active { border-color: #3b82f6; background-color: #eff6ff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12); }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
 
-    <div class="max-w-3xl mx-auto p-6 mt-10 bg-white rounded-2xl shadow-xl">
-        <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">Trạm Công Cụ Đa Năng (100% Miễn Phí & An Toàn)</h1>
-
-        <!-- TAB CHUYỂN ĐỔI & NÉN ẢNH -->
-        <div class="mb-8 p-4 border rounded-xl bg-blue-50/50">
-            <h2 class="text-lg font-semibold mb-3 text-blue-800">1. Chuyển Đổi Đuôi Ảnh & Nén (WebP / JPEG / PNG)</h2>
-            <input type="file" id="imageInput" accept="image/*" class="mb-3 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
-            
-            <div class="flex gap-4 mb-3">
-                <label class="flex items-center gap-2">
-                    <span>Định dạng mới:</span>
-                    <select id="imageFormat" class="border rounded px-2 py-1 bg-white">
-                        <option value="image/webp">WebP (Tối ưu cho Web)</option>
-                        <option value="image/jpeg">JPEG</option>
-                        <option value="image/png">PNG</option>
-                    </select>
-                </label>
-                <label class="flex items-center gap-2">
-                    <span>Chất lượng (0 - 1):</span>
-                    <input type="number" id="imageQuality" value="0.8" step="0.1" min="0.1" max="1" class="border rounded px-2 py-1 w-20 bg-white">
-                </label>
+    <div class="max-w-5xl mx-auto px-4 py-10">
+        <!-- HEADER -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900">Công cụ PDF của bạn</h1>
+                <p class="text-slate-500 mt-1">Chọn một công cụ, tải tài liệu lên và nhận kết quả chỉ trong vài bước.</p>
             </div>
-            <button onclick="processImage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition">Xử Lý & Tải Ảnh Về</button>
+            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-semibold px-3.5 py-2 rounded-full self-start">
+                <span>🔒 Xử lý trực tiếp trên trình duyệt — An toàn 100%</span>
+            </div>
         </div>
 
-        <!-- TAB TẠO / TRỘN PDF ĐƠN GIẢN -->
-        <div class="p-4 border rounded-xl bg-green-50/50">
-            <h2 class="text-lg font-semibold mb-3 text-green-800">2. Tạo File PDF từ Trình Duyệt (Sử dụng pdf-lib)</h2>
-            <p class="text-sm text-gray-600 mb-3">Tạo một file PDF đơn giản tích hợp chữ ký hoặc tiêu đề trực tiếp trên máy của bạn.</p>
-            <button onclick="createSimplePDF()" class="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition">Tạo File PDF Mẫu</button>
+        <!-- LƯỚI 6 CÔNG CỤ -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <button onclick="selectTool('word')" id="card-word" class="tool-card active text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mb-3">📝</div>
+                <h3 class="font-bold text-slate-900 text-base">PDF sang Word</h3>
+                <p class="text-xs text-slate-500 mt-1">Chuyển tài liệu PDF thành tệp DOCX có thể chỉnh sửa.</p>
+            </button>
+
+            <button onclick="selectTool('excel')" id="card-excel" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-3">📊</div>
+                <h3 class="font-bold text-slate-900 text-base">PDF sang Excel</h3>
+                <p class="text-xs text-slate-500 mt-1">Trích xuất dữ liệu văn bản & bảng từ PDF sang XLSX.</p>
+            </button>
+
+            <button onclick="selectTool('image')" id="card-image" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-3">🖼️</div>
+                <h3 class="font-bold text-slate-900 text-base">PDF sang hình ảnh</h3>
+                <p class="text-xs text-slate-500 mt-1">Xuất từng trang thành ảnh PNG, đóng gói ZIP.</p>
+            </button>
+
+            <button onclick="selectTool('merge')" id="card-merge" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mb-3">📑</div>
+                <h3 class="font-bold text-slate-900 text-base">Gộp PDF</h3>
+                <p class="text-xs text-slate-500 mt-1">Kết hợp nhiều tài liệu PDF thành một tệp duy nhất.</p>
+            </button>
+
+            <button onclick="selectTool('split')" id="card-split" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl mb-3">✂️</div>
+                <h3 class="font-bold text-slate-900 text-base">Tách PDF</h3>
+                <p class="text-xs text-slate-500 mt-1">Tách một hoặc nhiều trang theo khoảng trang tùy chọn.</p>
+            </button>
+
+            <button onclick="selectTool('compress')" id="card-compress" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl mb-3">🗜️</div>
+                <h3 class="font-bold text-slate-900 text-base">Nén PDF</h3>
+                <p class="text-xs text-slate-500 mt-1">Giảm dung lượng PDF trực tiếp bằng tối ưu hình ảnh.</p>
+            </button>
+        </div>
+
+        <!-- KHUNG THAO TÁC CHI TIẾT -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <h2 id="panel-title" class="text-xl font-bold text-slate-900">PDF sang Word</h2>
+            <p id="panel-desc" class="text-sm text-slate-500 mt-1 mb-5">Trích xuất nội dung từ file PDF và tạo tệp Word (.docx) tải về ngay lập tức.</p>
+
+            <!-- Vùng chọn file -->
+            <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-blue-500 transition bg-slate-50/50">
+                <input type="file" id="pdfInput" accept="application/pdf" class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mx-auto max-w-md">
+                <p id="file-hint" class="text-xs text-slate-400 mt-2">Chọn 1 tệp PDF từ máy tính của bạn</p>
+            </div>
+
+            <!-- Tùy chọn riêng cho Tách PDF -->
+            <div id="opt-split" class="hidden mt-4">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nhập khoảng trang muốn tách (ví dụ: 1-3, 5):</label>
+                <input type="text" id="splitRange" placeholder="Ví dụ: 1-2, 4" class="w-full md:w-80 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            </div>
+
+            <!-- Tùy chọn riêng cho Nén PDF -->
+            <div id="opt-compress" class="hidden mt-4">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Mức độ nén (Chất lượng ảnh):</label>
+                <select id="compressLevel" class="w-full md:w-80 border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white">
+                    <option value="0.75">Nén nhẹ (Chất lượng tốt - 75%)</option>
+                    <option value="0.5" selected>Nén vừa (Cân bằng - 50%)</option>
+                    <option value="0.3">Nén cao (Dung lượng nhỏ nhất - 30%)</option>
+                </select>
+            </div>
+
+            <!-- Nút thực thi & Trạng thái -->
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+                <button onclick="runTool()" id="runBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition shadow-sm">
+                    Bắt đầu xử lý
+                </button>
+                <span id="statusText" class="text-sm text-slate-600 font-medium"></span>
+            </div>
         </div>
     </div>
 
     <script>
-        // Xử lý chuyển đổi đuôi và nén ảnh bằng Compressor.js
-        function processImage() {
-            const fileInput = document.getElementById('imageInput');
-            const format = document.getElementById('imageFormat').value;
-            const quality = parseFloat(document.getElementById('imageQuality').value);
+        // Cấu hình Worker cho PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-            if (fileInput.files.length === 0) {
-                alert('Vui lòng chọn một file ảnh trước!');
+        let currentTool = 'word';
+
+        const toolInfo = {
+            word: {
+                title: 'PDF sang Word',
+                desc: 'Chuyển đổi văn bản từ tài liệu PDF sang định dạng Microsoft Word (.docx).',
+                multiple: false,
+                hint: 'Chọn 1 tệp PDF để chuyển sang Word'
+            },
+            excel: {
+                title: 'PDF sang Excel',
+                desc: 'Trích xuất các dòng dữ liệu từ PDF thành bảng tính Excel (.xlsx).',
+                multiple: false,
+                hint: 'Chọn 1 tệp PDF chứa bảng hoặc danh sách dữ liệu'
+            },
+            image: {
+                title: 'PDF sang hình ảnh (PNG + ZIP)',
+                desc: 'Chuyển toàn bộ các trang PDF thành ảnh PNG sắc nét và nén thành file ZIP.',
+                multiple: false,
+                hint: 'Chọn 1 tệp PDF để xuất ảnh từng trang'
+            },
+            merge: {
+                title: 'Gộp PDF',
+                desc: 'Chọn nhiều file PDF cùng lúc để ghép nối thành 1 file hoàn chỉnh.',
+                multiple: true,
+                hint: 'Giữ phím Ctrl (hoặc Cmd) để chọn nhiều tệp PDF cùng lúc'
+            },
+            split: {
+                title: 'Tách PDF',
+                desc: 'Trích xuất các trang cần thiết ra thành một tệp PDF mới.',
+                multiple: false,
+                hint: 'Chọn 1 tệp PDF và nhập số trang bên dưới'
+            },
+            compress: {
+                title: 'Nén PDF',
+                desc: 'Giảm dung lượng tệp PDF. Mức nén cao có thể làm giảm độ nét của hình ảnh.',
+                multiple: false,
+                hint: 'Chọn 1 tệp PDF cần giảm dung lượng'
+            }
+        };
+
+        function selectTool(tool) {
+            currentTool = tool;
+            document.querySelectorAll('.tool-card').forEach(el => el.classList.remove('active'));
+            document.getElementById('card-' + tool).classList.add('active');
+
+            const info = toolInfo[tool];
+            document.getElementById('panel-title').innerText = info.title;
+            document.getElementById('panel-desc').innerText = info.desc;
+            document.getElementById('file-hint').innerText = info.hint;
+
+            const input = document.getElementById('pdfInput');
+            input.value = '';
+            input.multiple = info.multiple;
+
+            document.getElementById('opt-split').classList.toggle('hidden', tool !== 'split');
+            document.getElementById('opt-compress').classList.toggle('hidden', tool !== 'compress');
+            document.getElementById('statusText').innerText = '';
+        }
+
+        function setStatus(msg) {
+            document.getElementById('statusText').innerText = msg;
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        async function runTool() {
+            const input = document.getElementById('pdfInput');
+            if (!input.files || input.files.length === 0) {
+                alert('Vui lòng chọn tệp PDF trước!');
                 return;
             }
 
-            const file = fileInput.files[0];
+            const btn = document.getElementById('runBtn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
 
-            new Compressor(file, {
-                quality: quality,
-                mimeType: format,
-                success(result) {
-                    // Tạo link tải tự động cho người dùng
-                    const url = URL.createObjectURL(result);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    const extension = format.split('/')[1];
-                    a.download = `converted-image.${extension}`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    alert('Đã xử lý và tải ảnh thành công!');
-                },
-                error(err) {
-                    console.error(err.message);
-                    alert('Có lỗi xảy ra khi xử lý ảnh.');
-                },
-            });
+            try {
+                if (currentTool === 'word') await handlePdfToWord(input.files[0]);
+                else if (currentTool === 'excel') await handlePdfToExcel(input.files[0]);
+                else if (currentTool === 'image') await handlePdfToImages(input.files[0]);
+                else if (currentTool === 'merge') await handleMergePdf(input.files);
+                else if (currentTool === 'split') await handleSplitPdf(input.files[0]);
+                else if (currentTool === 'compress') await handleCompressPdf(input.files[0]);
+            } catch (err) {
+                console.error(err);
+                setStatus('❌ Có lỗi xảy ra: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+            }
         }
 
-        // Tạo file PDF sử dụng pdf-lib (Giấy phép MIT)
-        async function createSimplePDF() {
-            const { PDFDocument, rgb } = PDFLib;
+        // 1. PDF SANG WORD (DOCX)
+        async function handlePdfToWord(file) {
+            setStatus('⏳ Đang trích xuất văn bản sang Word...');
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const paragraphs = [];
 
-            // Tạo một tài liệu PDF mới
-            const pdfDoc = await PDFDocument.create();
-            const page = pdfDoc.addPage([600, 400]);
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                paragraphs.push(new docx.Paragraph({
+                    children: [new docx.TextRun(pageText)],
+                    spacing: { after: 200 }
+                }));
+            }
 
-            // Viết chữ lên PDF
-            page.drawText('Chao mung ban den voi cong cu PDF mien phi!', {
-                x: 50,
-                y: 300,
-                size: 18,
-                color: rgb(0, 0.53, 0.71),
+            const doc = new docx.Document({ sections: [{ children: paragraphs }] });
+            const blob = await docx.Packer.toBlob(doc);
+            downloadBlob(blob, file.name.replace(/\.pdf$/i, '') + '.docx');
+            setStatus('✅ Đã chuyển sang Word thành công!');
+        }
+
+        // 2. PDF SANG EXCEL (XLSX)
+        async function handlePdfToExcel(file) {
+            setStatus('⏳ Đang trích xuất dữ liệu sang Excel...');
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const rows = [];
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                // Gom chữ theo tọa độ Y (cùng dòng)
+                const lineMap = {};
+                textContent.items.forEach(item => {
+                    const y = Math.round(item.transform[5]);
+                    if (!lineMap[y]) lineMap[y] = [];
+                    lineMap[y].push({ x: item.transform[4], text: item.str });
+                });
+
+                Object.keys(lineMap).sort((a, b) => b - a).forEach(y => {
+                    const sortedCols = lineMap[y].sort((a, b) => a.x - b.x).map(c => c.text);
+                    rows.push(sortedCols);
+                });
+            }
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            XLSX.utils.book_append_sheet(wb, ws, 'DuLieuPDF');
+            const xlsxData = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            downloadBlob(new Blob([xlsxData]), file.name.replace(/\.pdf$/i, '') + '.xlsx');
+            setStatus('✅ Đã xuất tệp Excel (.xlsx) thành công!');
+        }
+
+        // 3. PDF SANG HÌNH ẢNH (ZIP)
+        async function handlePdfToImages(file) {
+            setStatus('⏳ Đang chuyển các trang sang PNG và nén ZIP...');
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const zip = new JSZip();
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                setStatus(`⏳ Đang xuất trang ${i}/${pdf.numPages}...`);
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 2.0 });
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                const dataUrl = canvas.toDataURL('image/png');
+                const base64Data = dataUrl.split(',')[1];
+                zip.file(`trang-${i}.png`, base64Data, { base64: true });
+            }
+
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            downloadBlob(zipBlob, file.name.replace(/\.pdf$/i, '') + '-images.zip');
+            setStatus('✅ Đã tải gói ảnh ZIP thành công!');
+        }
+
+        // 4. GỘP PDF
+        async function handleMergePdf(files) {
+            if (files.length < 2) {
+                alert('Vui lòng chọn ít nhất 2 tệp PDF để gộp!');
+                return;
+            }
+            setStatus('⏳ Đang gộp các tệp PDF...');
+            const mergedPdf = await PDFLib.PDFDocument.create();
+
+            for (const file of files) {
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                copiedPages.forEach(page => mergedPdf.addPage(page));
+            }
+
+            const outBytes = await mergedPdf.save();
+            downloadBlob(new Blob([outBytes], { type: 'application/pdf' }), 'gop-tai-lieu.pdf');
+            setStatus(`✅ Đã gộp thành công ${files.length} tệp PDF!`);
+        }
+
+        // 5. TÁCH PDF
+        async function handleSplitPdf(file) {
+            const rangeStr = document.getElementById('splitRange').value.trim();
+            if (!rangeStr) {
+                alert('Vui lòng nhập khoảng trang muốn tách (ví dụ: 1-2, 4)!');
+                return;
+            }
+            setStatus('⏳ Đang tách trang PDF...');
+            const bytes = await file.arrayBuffer();
+            const srcPdf = await PDFLib.PDFDocument.load(bytes);
+            const totalPages = srcPdf.getPageCount();
+            const pageIndices = new Set();
+
+            rangeStr.split(',').forEach(part => {
+                const bounds = part.trim().split('-').map(Number);
+                if (bounds.length === 1 && bounds[0] >= 1 && bounds[0] <= totalPages) {
+                    pageIndices.add(bounds[0] - 1);
+                } else if (bounds.length === 2) {
+                    const start = Math.max(1, bounds[0]);
+                    const end = Math.min(totalPages, bounds[1]);
+                    for (let p = start; p <= end; p++) pageIndices.add(p - 1);
+                }
             });
 
-            // Xuất file PDF dưới dạng bytes
-            const pdfBytes = await pdfDoc.save();
+            if (pageIndices.size === 0) {
+                alert(`Số trang không hợp lệ! Tệp này có tổng cộng ${totalPages} trang.`);
+                return;
+            }
 
-            // Tải file về máy
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'tai-lieu-moi.pdf';
-            link.click();
-            URL.revokeObjectURL(link.href);
+            const newPdf = await PDFLib.PDFDocument.create();
+            const copied = await newPdf.copyPages(srcPdf, Array.from(pageIndices));
+            copied.forEach(p => newPdf.addPage(p));
+
+            const outBytes = await newPdf.save();
+            downloadBlob(new Blob([outBytes], { type: 'application/pdf' }), 'tach-' + file.name);
+            setStatus(`✅ Đã tách ${pageIndices.size} trang thành công!`);
+        }
+
+        // 6. NÉN PDF (CLIENT-SIDE)
+        async function handleCompressPdf(file) {
+            const quality = parseFloat(document.getElementById('compressLevel').value);
+            setStatus('⏳ Đang nén tệp PDF...');
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const outPdf = await PDFLib.PDFDocument.create();
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                setStatus(`⏳ Đang tối ưu trang ${i}/${pdf.numPages}...`);
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 1.3 });
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                const jpgDataUrl = canvas.toDataURL('image/jpeg', quality);
+                const jpgImage = await outPdf.embedJpg(jpgDataUrl);
+                const newPage = outPdf.addPage([viewport.width, viewport.height]);
+                newPage.drawImage(jpgImage, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+            }
+
+            const outBytes = await outPdf.save();
+            const oldKB = (file.size / 1024).toFixed(1);
+            const newKB = (outBytes.byteLength / 1024).toFixed(1);
+            downloadBlob(new Blob([outBytes], { type: 'application/pdf' }), 'nen-' + file.name);
+            setStatus(`✅ Hoàn tất! Dung lượng giảm từ ${oldKB} KB xuống ${newKB} KB.`);
         }
     </script>
 </body>

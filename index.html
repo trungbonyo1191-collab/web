@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Công Cụ Miễn Phí - Xử lý Ảnh & PDF</title>
+    <!-- Tailwind CSS cho giao diện đẹp, miễn phí -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Compressor.js (Giấy phép MIT - Chuyên nén và đổi đuôi ảnh) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.2.1/compressor.min.js"></script>
+    <!-- pdf-lib (Giấy phép MIT - Xử lý PDF trên trình duyệt) -->
+    <script src="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <div class="max-w-3xl mx-auto p-6 mt-10 bg-white rounded-2xl shadow-xl">
+        <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">Trạm Công Cụ Đa Năng (100% Miễn Phí & An Toàn)</h1>
+
+        <!-- TAB CHUYỂN ĐỔI & NÉN ẢNH -->
+        <div class="mb-8 p-4 border rounded-xl bg-blue-50/50">
+            <h2 class="text-lg font-semibold mb-3 text-blue-800">1. Chuyển Đổi Đuôi Ảnh & Nén (WebP / JPEG / PNG)</h2>
+            <input type="file" id="imageInput" accept="image/*" class="mb-3 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+            
+            <div class="flex gap-4 mb-3">
+                <label class="flex items-center gap-2">
+                    <span>Định dạng mới:</span>
+                    <select id="imageFormat" class="border rounded px-2 py-1 bg-white">
+                        <option value="image/webp">WebP (Tối ưu cho Web)</option>
+                        <option value="image/jpeg">JPEG</option>
+                        <option value="image/png">PNG</option>
+                    </select>
+                </label>
+                <label class="flex items-center gap-2">
+                    <span>Chất lượng (0 - 1):</span>
+                    <input type="number" id="imageQuality" value="0.8" step="0.1" min="0.1" max="1" class="border rounded px-2 py-1 w-20 bg-white">
+                </label>
+            </div>
+            <button onclick="processImage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition">Xử Lý & Tải Ảnh Về</button>
+        </div>
+
+        <!-- TAB TẠO / TRỘN PDF ĐƠN GIẢN -->
+        <div class="p-4 border rounded-xl bg-green-50/50">
+            <h2 class="text-lg font-semibold mb-3 text-green-800">2. Tạo File PDF từ Trình Duyệt (Sử dụng pdf-lib)</h2>
+            <p class="text-sm text-gray-600 mb-3">Tạo một file PDF đơn giản tích hợp chữ ký hoặc tiêu đề trực tiếp trên máy của bạn.</p>
+            <button onclick="createSimplePDF()" class="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition">Tạo File PDF Mẫu</button>
+        </div>
+    </div>
+
+    <script>
+        // Xử lý chuyển đổi đuôi và nén ảnh bằng Compressor.js
+        function processImage() {
+            const fileInput = document.getElementById('imageInput');
+            const format = document.getElementById('imageFormat').value;
+            const quality = parseFloat(document.getElementById('imageQuality').value);
+
+            if (fileInput.files.length === 0) {
+                alert('Vui lòng chọn một file ảnh trước!');
+                return;
+            }
+
+            const file = fileInput.files[0];
+
+            new Compressor(file, {
+                quality: quality,
+                mimeType: format,
+                success(result) {
+                    // Tạo link tải tự động cho người dùng
+                    const url = URL.createObjectURL(result);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const extension = format.split('/')[1];
+                    a.download = `converted-image.${extension}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    alert('Đã xử lý và tải ảnh thành công!');
+                },
+                error(err) {
+                    console.error(err.message);
+                    alert('Có lỗi xảy ra khi xử lý ảnh.');
+                },
+            });
+        }
+
+        // Tạo file PDF sử dụng pdf-lib (Giấy phép MIT)
+        async function createSimplePDF() {
+            const { PDFDocument, rgb } = PDFLib;
+
+            // Tạo một tài liệu PDF mới
+            const pdfDoc = await PDFDocument.create();
+            const page = pdfDoc.addPage([600, 400]);
+
+            // Viết chữ lên PDF
+            page.drawText('Chao mung ban den voi cong cu PDF mien phi!', {
+                x: 50,
+                y: 300,
+                size: 18,
+                color: rgb(0, 0.53, 0.71),
+            });
+
+            // Xuất file PDF dưới dạng bytes
+            const pdfBytes = await pdfDoc.save();
+
+            // Tải file về máy
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'tai-lieu-moi.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+    </script>
+</body>
+</html>

@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trạm Công Cụ Đa Năng - 100% Miễn Phí & Bảo Mật</title>
+    <title id="page-title">OmniTools - Secure & Free Browser-Based File Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Các thư viện mã nguồn mở miễn phí -->
+    <!-- Open Source Libraries (Commercial Friendly: MIT & Apache 2.0) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-    <!-- Thư viện nén/xử lý ảnh (MIT License) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.2.1/compressor.min.js"></script>
 
     <style>
         .tool-card { transition: all 0.2s ease; }
@@ -22,100 +20,107 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
 
-    <div class="max-w-5xl mx-auto px-4 py-10">
-        <!-- HEADER -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- HEADER & LANGUAGE SWITCHER -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 border-b border-slate-200 pb-6">
             <div>
-                <h1 class="text-3xl font-bold text-slate-900">Trạm Công Cụ Đa Năng</h1>
-                <p class="text-slate-500 mt-1">Xóa phông ảnh, xử lý PDF, chuyển đổi định dạng hoàn toàn trên trình duyệt.</p>
+                <h1 id="main-heading" class="text-3xl font-extrabold text-slate-900 tracking-tight">OmniTools Workspace</h1>
+                <p id="main-sub" class="text-slate-500 mt-1">Professional document & multimedia utilities. 100% Client-side privacy.</p>
             </div>
-            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-semibold px-3.5 py-2 rounded-full self-start">
-                <span>🔒 Bảo mật tuyệt đối — Chạy trên máy người dùng</span>
+            <div class="flex items-center gap-3">
+                <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-semibold px-3.5 py-2 rounded-full">
+                    <span>🔒 <span id="badge-text">100% Secure & Private</span></span>
+                </div>
+                <!-- Language Switcher -->
+                <select id="langSelect" onchange="switchLanguage(this.value)" class="bg-white border border-slate-300 text-slate-700 text-xs font-semibold rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    <option value="en">English (Global)</option>
+                    <option value="vi">Tiếng Việt</option>
+                </select>
             </div>
         </div>
 
-        <!-- LƯỚI 8 CÔNG CỤ -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <button onclick="selectTool('removebg')" id="card-removebg" class="tool-card active text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-xl mb-3">✨</div>
-                <h3 class="font-bold text-slate-900 text-base">Xóa Phông Nền Ảnh</h3>
-                <p class="text-xs text-slate-500 mt-1">Tách nền ảnh, tạo ảnh trong suốt (PNG) tự động.</p>
+        <!-- TOOLS GRID -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <button onclick="selectTool('removebg')" id="card-removebg" class="tool-card active text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg mb-2">✨</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_removebg">Background Remover</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_removebg">Extract subject and make transparent PNG.</p>
             </button>
 
-            <button onclick="selectTool('img2pdf')" id="card-img2pdf" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl mb-3">📁</div>
-                <h3 class="font-bold text-slate-900 text-base">Ảnh sang PDF</h3>
-                <p class="text-xs text-slate-500 mt-1">Gộp nhiều ảnh thành 1 file PDF duy nhất.</p>
+            <button onclick="selectTool('img2pdf')" id="card-img2pdf" class="tool-card text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg mb-2">📁</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_img2pdf">Images to PDF</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_img2pdf">Merge multiple images into a single PDF.</p>
             </button>
 
-            <button onclick="selectTool('word')" id="card-word" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mb-3">📝</div>
-                <h3 class="font-bold text-slate-900 text-base">PDF sang Word</h3>
-                <p class="text-xs text-slate-500 mt-1">Chuyển tài liệu PDF thành tệp DOCX chỉnh sửa được.</p>
+            <button onclick="selectTool('word')" id="card-word" class="tool-card text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg mb-2">📝</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_word">PDF to Word</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_word">Convert PDF text layout into editable DOCX.</p>
             </button>
 
-            <button onclick="selectTool('excel')" id="card-excel" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-3">📊</div>
-                <h3 class="font-bold text-slate-900 text-base">PDF sang Excel</h3>
-                <p class="text-xs text-slate-500 mt-1">Trích xuất bảng dữ liệu từ PDF sang XLSX.</p>
+            <button onclick="selectTool('excel')" id="card-excel" class="tool-card text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg mb-2">📊</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_excel">PDF to Excel</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_excel">Extract tables and datasets into XLSX.</p>
             </button>
 
-            <button onclick="selectTool('image')" id="card-image" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-3">🖼️</div>
-                <h3 class="font-bold text-slate-900 text-base">PDF sang hình ảnh</h3>
-                <p class="text-xs text-slate-500 mt-1">Xuất từng trang PDF thành ảnh PNG, nén ZIP.</p>
+            <button onclick="selectTool('image')" id="card-image" class="tool-card text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg mb-2">🖼️</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_image">PDF to Images</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_image">Render PDF pages to PNG zipped archive.</p>
             </button>
 
-            <button onclick="selectTool('merge')" id="card-merge" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mb-3">📑</div>
-                <h3 class="font-bold text-slate-900 text-base">Gộp PDF</h3>
-                <p class="text-xs text-slate-500 mt-1">Kết hợp nhiều tài liệu PDF thành một tệp.</p>
+            <button onclick="selectTool('merge')" id="card-merge" class="tool-card text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg mb-2">📑</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_merge">Merge PDF</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_merge">Combine multiple PDF files easily.</p>
             </button>
 
-            <button onclick="selectTool('split')" id="card-split" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl mb-3">✂️</div>
-                <h3 class="font-bold text-slate-900 text-base">Tách PDF</h3>
-                <p class="text-xs text-slate-500 mt-1">Tách trang theo khoảng tùy chọn.</p>
+            <button onclick="selectTool('split')" id="card-split" class="tool-card text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg mb-2">✂️</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_split">Split PDF</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_split">Extract specific pages or page ranges.</p>
             </button>
 
-            <button onclick="selectTool('compress')" id="card-compress" class="tool-card text-left bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
-                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl mb-3">🗜️</div>
-                <h3 class="font-bold text-slate-900 text-base">Nén PDF</h3>
-                <p class="text-xs text-slate-500 mt-1">Giảm dung lượng PDF trực tiếp.</p>
+            <button onclick="selectTool('compress')" id="card-compress" class="tool-card text-left bg-white p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400">
+                <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg mb-2">🗜️</div>
+                <h3 class="font-bold text-slate-900 text-sm" data-i18n="t_compress">Compress PDF</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="d_compress">Reduce file size optimizing inner elements.</p>
             </button>
         </div>
 
-        <!-- KHUNG THAO TÁC CHI TIẾT -->
+        <!-- MAIN INTERACTIVE WORKSPACE -->
         <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
-            <h2 id="panel-title" class="text-xl font-bold text-slate-900">Xóa Phông Nền Ảnh</h2>
-            <p id="panel-desc" class="text-sm text-slate-500 mt-1 mb-5">Tải lên một bức ảnh để tách phông nền và tải về ảnh định dạng trong suốt (PNG).</p>
+            <h2 id="panel-title" class="text-xl font-bold text-slate-900">Background Remover</h2>
+            <p id="panel-desc" class="text-sm text-slate-500 mt-1 mb-5">Upload an image to automatically isolate the foreground subject.</p>
 
-            <!-- Vùng chọn file -->
+            <!-- File Upload Zone -->
             <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-blue-500 transition bg-slate-50/50">
                 <input type="file" id="fileInput" accept="image/*" class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mx-auto max-w-md">
-                <p id="file-hint" class="text-xs text-slate-400 mt-2">Chọn 1 tệp ảnh (JPG, PNG, WebP)</p>
+                <p id="file-hint" class="text-xs text-slate-400 mt-2">Select 1 image file (JPG, PNG, WebP)</p>
             </div>
 
-            <!-- Tùy chọn riêng cho Tách PDF -->
+            <!-- Custom Options for Split PDF -->
             <div id="opt-split" class="hidden mt-4">
-                <label class="block text-sm font-medium text-slate-700 mb-1">Nhập khoảng trang muốn tách (ví dụ: 1-3, 5):</label>
-                <input type="text" id="splitRange" placeholder="Ví dụ: 1-2, 4" class="w-full md:w-80 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                <label id="lbl-split" class="block text-sm font-medium text-slate-700 mb-1">Enter page range (e.g., 1-3, 5):</label>
+                <input type="text" id="splitRange" placeholder="e.g. 1-2, 4" class="w-full md:w-80 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
             </div>
 
-            <!-- Tùy chọn riêng cho Nén PDF -->
+            <!-- Custom Options for Compress PDF -->
             <div id="opt-compress" class="hidden mt-4">
-                <label class="block text-sm font-medium text-slate-700 mb-1">Mức độ nén (Chất lượng ảnh):</label>
+                <label id="lbl-compress" class="block text-sm font-medium text-slate-700 mb-1">Compression Level:</label>
                 <select id="compressLevel" class="w-full md:w-80 border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white">
-                    <option value="0.75">Nén nhẹ (Chất lượng tốt - 75%)</option>
-                    <option value="0.5" selected>Nén vừa (Cân bằng - 50%)</option>
-                    <option value="0.3">Nén cao (Dung lượng nhỏ nhất - 30%)</option>
+                    <option value="0.75" data-i18n="opt_low">Light (High Quality - 75%)</option>
+                    <option value="0.5" selected data-i18n="opt_med">Medium (Balanced - 50%)</option>
+                    <option value="0.3" data-i18n="opt_high">High (Smallest Size - 30%)</option>
                 </select>
             </div>
 
-            <!-- Nút thực thi & Trạng thái -->
+            <!-- Action & Status Bar -->
             <div class="mt-6 flex flex-wrap items-center gap-4">
                 <button onclick="runTool()" id="runBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition shadow-sm">
-                    Bắt đầu xử lý
+                    Process File
                 </button>
                 <span id="statusText" class="text-sm text-slate-600 font-medium"></span>
             </div>
@@ -125,85 +130,124 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+        let currentLang = 'en';
         let currentTool = 'removebg';
 
-        const toolInfo = {
-            removebg: {
-                title: 'Xóa Phông Nền Ảnh',
-                desc: 'Tải lên một bức ảnh để tách phông nền và tải về ảnh định dạng trong suốt (PNG).',
-                accept: 'image/*',
-                multiple: false,
-                hint: 'Chọn 1 tệp ảnh (JPG, PNG, WebP)'
+        const i18n = {
+            en: {
+                pageTitle: "OmniTools - Secure & Free Browser-Based File Suite",
+                mainHeading: "OmniTools Workspace",
+                mainSub: "Professional document & multimedia utilities. 100% Client-side privacy.",
+                badgeText: "100% Secure & Private",
+                runBtn: "Process File",
+                t_removebg: "Background Remover", d_removebg: "Extract subject and make transparent PNG.",
+                t_img2pdf: "Images to PDF", d_img2pdf: "Merge multiple images into a single PDF.",
+                t_word: "PDF to Word", d_word: "Convert PDF text layout into editable DOCX.",
+                t_excel: "PDF to Excel", d_excel: "Extract tables and datasets into XLSX.",
+                t_image: "PDF to Images", d_image: "Render PDF pages to PNG zipped archive.",
+                t_merge: "Merge PDF", d_merge: "Combine multiple PDF files easily.",
+                t_split: "Split PDF", d_split: "Extract specific pages or page ranges.",
+                t_compress: "Compress PDF", d_compress: "Reduce file size optimizing inner elements.",
+                hint_removebg: "Select 1 image file (JPG, PNG, WebP)",
+                hint_img2pdf: "Hold Ctrl (or Cmd) to select multiple images",
+                hint_word: "Select 1 PDF file to convert to Word",
+                hint_excel: "Select 1 PDF file containing tables",
+                hint_image: "Select 1 PDF file to export pages as images",
+                hint_merge: "Hold Ctrl (or Cmd) to select multiple PDF files",
+                hint_split: "Select 1 PDF file and specify page ranges below",
+                hint_compress: "Select 1 PDF file to reduce size",
+                lblSplit: "Enter page range (e.g., 1-3, 5):",
+                lblCompress: "Compression Level:",
+                optLow: "Light (High Quality - 75%)",
+                optMed: "Medium (Balanced - 50%)",
+                optHigh: "High (Smallest Size - 30%)"
             },
-            img2pdf: {
-                title: 'Ảnh sang PDF',
-                desc: 'Chọn nhiều bức ảnh từ thiết bị của bạn để gộp chung thành một tệp PDF duy nhất.',
-                accept: 'image/*',
-                multiple: true,
-                hint: 'Giữ phím Ctrl (hoặc Cmd) để chọn nhiều ảnh'
-            },
-            word: {
-                title: 'PDF sang Word',
-                desc: 'Chuyển đổi văn bản từ tài liệu PDF sang định dạng Microsoft Word (.docx).',
-                accept: 'application/pdf',
-                multiple: false,
-                hint: 'Chọn 1 tệp PDF để chuyển sang Word'
-            },
-            excel: {
-                title: 'PDF sang Excel',
-                desc: 'Trích xuất các dòng dữ liệu từ PDF thành bảng tính Excel (.xlsx).',
-                accept: 'application/pdf',
-                multiple: false,
-                hint: 'Chọn 1 tệp PDF chứa bảng dữ liệu'
-            },
-            image: {
-                title: 'PDF sang hình ảnh (PNG + ZIP)',
-                desc: 'Chuyển toàn bộ các trang PDF thành ảnh PNG sắc nét và nén thành file ZIP.',
-                accept: 'application/pdf',
-                multiple: false,
-                hint: 'Chọn 1 tệp PDF để xuất ảnh từng trang'
-            },
-            merge: {
-                title: 'Gộp PDF',
-                desc: 'Chọn nhiều file PDF cùng lúc để ghép nối thành 1 file hoàn chỉnh.',
-                accept: 'application/pdf',
-                multiple: true,
-                hint: 'Giữ phím Ctrl (hoặc Cmd) để chọn nhiều tệp PDF'
-            },
-            split: {
-                title: 'Tách PDF',
-                desc: 'Trích xuất các trang cần thiết ra thành một tệp PDF mới.',
-                accept: 'application/pdf',
-                multiple: false,
-                hint: 'Chọn 1 tệp PDF và nhập số trang'
-            },
-            compress: {
-                title: 'Nén PDF',
-                desc: 'Giảm dung lượng tệp PDF bằng cách tối ưu hóa hình ảnh bên trong.',
-                accept: 'application/pdf',
-                multiple: false,
-                hint: 'Chọn 1 tệp PDF cần giảm dung lượng'
+            vi: {
+                pageTitle: "OmniTools - Trạm Công Cụ Đa Năng Miễn Phí & Bảo Mật",
+                mainHeading: "Trạm Công Cụ OmniTools",
+                mainSub: "Hệ sinh thái xử lý tài liệu & đa phương tiện chuyên nghiệp. Bảo mật 100% trên trình duyệt.",
+                badgeText: "Bảo mật tuyệt đối — Chạy trên máy",
+                runBtn: "Bắt đầu xử lý",
+                t_removebg: "Xóa Phông Nền Ảnh", d_removebg: "Tách nền ảnh, tạo ảnh trong suốt tự động.",
+                t_img2pdf: "Ảnh sang PDF", d_img2pdf: "Gộp nhiều ảnh thành 1 file PDF duy nhất.",
+                t_word: "PDF sang Word", d_word: "Chuyển tài liệu PDF thành tệp DOCX chỉnh sửa được.",
+                t_excel: "PDF sang Excel", d_excel: "Trích xuất bảng dữ liệu từ PDF sang XLSX.",
+                t_image: "PDF sang hình ảnh", d_image: "Xuất từng trang PDF thành ảnh PNG, nén ZIP.",
+                t_merge: "Gộp PDF", d_merge: "Kết hợp nhiều tài liệu PDF thành một tệp.",
+                t_split: "Tách PDF", d_split: "Tách trang theo khoảng tùy chọn.",
+                t_compress: "Nén PDF", d_compress: "Giảm dung lượng PDF trực tiếp.",
+                hint_removebg: "Chọn 1 tệp ảnh (JPG, PNG, WebP)",
+                hint_img2pdf: "Giữ phím Ctrl (hoặc Cmd) để chọn nhiều ảnh",
+                hint_word: "Chọn 1 tệp PDF để chuyển sang Word",
+                hint_excel: "Chọn 1 tệp PDF chứa bảng dữ liệu",
+                hint_image: "Chọn 1 tệp PDF để xuất ảnh từng trang",
+                hint_merge: "Giữ phím Ctrl (hoặc Cmd) để chọn nhiều tệp PDF",
+                hint_split: "Chọn 1 tệp PDF và nhập số trang",
+                hint_compress: "Chọn 1 tệp PDF cần giảm dung lượng",
+                lblSplit: "Nhập khoảng trang muốn tách (ví dụ: 1-3, 5):",
+                lblCompress: "Mức độ nén (Chất lượng ảnh):",
+                optLow: "Nén nhẹ (Chất lượng tốt - 75%)",
+                optMed: "Nén vừa (Cân bằng - 50%)",
+                optHigh: "Nén cao (Dung lượng nhỏ nhất - 30%)"
             }
         };
+
+        const toolConfig = {
+            removebg: { accept: 'image/*', multiple: false },
+            img2pdf: { accept: 'image/*', multiple: true },
+            word: { accept: 'application/pdf', multiple: false },
+            excel: { accept: 'application/pdf', multiple: false },
+            image: { accept: 'application/pdf', multiple: false },
+            merge: { accept: 'application/pdf', multiple: true },
+            split: { accept: 'application/pdf', multiple: false },
+            compress: { accept: 'application/pdf', multiple: false }
+        };
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const dict = i18n[lang];
+            document.getElementById('page-title').innerText = dict.pageTitle;
+            document.getElementById('main-heading').innerText = dict.mainHeading;
+            document.getElementById('main-sub').innerText = dict.mainSub;
+            document.getElementById('badge-text').innerText = dict.badgeText;
+            document.getElementById('runBtn').innerText = dict.runBtn;
+            document.getElementById('lbl-split').innerText = dict.lblSplit;
+            document.getElementById('lbl-compress').innerText = dict.lblCompress;
+
+            // Update card texts
+            Object.keys(dict).forEach(key => {
+                const el = document.querySelector(`[data-i18n="${key}"]`);
+                if (el) el.innerText = dict[key];
+            });
+
+            // Update hint
+            updateUIState();
+        }
 
         function selectTool(tool) {
             currentTool = tool;
             document.querySelectorAll('.tool-card').forEach(el => el.classList.remove('active'));
             document.getElementById('card-' + tool).classList.add('active');
 
-            const info = toolInfo[tool];
-            document.getElementById('panel-title').innerText = info.title;
-            document.getElementById('panel-desc').innerText = info.desc;
-            document.getElementById('file-hint').innerText = info.hint;
+            const dict = i18n[currentLang];
+            document.getElementById('panel-title').innerText = dict['t_' + tool];
+            document.getElementById('panel-desc').innerText = dict['d_' + tool];
+
+            updateUIState();
+            document.getElementById('statusText').innerText = '';
+        }
+
+        function updateUIState() {
+            const dict = i18n[currentLang];
+            document.getElementById('file-hint').innerText = dict['hint_' + currentTool] || '';
 
             const input = document.getElementById('fileInput');
             input.value = '';
-            input.accept = info.accept;
-            input.multiple = info.multiple;
+            input.accept = toolConfig[currentTool].accept;
+            input.multiple = toolConfig[currentTool].multiple;
 
-            document.getElementById('opt-split').classList.toggle('hidden', tool !== 'split');
-            document.getElementById('opt-compress').classList.toggle('hidden', tool !== 'compress');
-            document.getElementById('statusText').innerText = '';
+            document.getElementById('opt-split').classList.toggle('hidden', currentTool !== 'split');
+            document.getElementById('opt-compress').classList.toggle('hidden', currentTool !== 'compress');
         }
 
         function setStatus(msg) {
@@ -224,7 +268,7 @@
         async function runTool() {
             const input = document.getElementById('fileInput');
             if (!input.files || input.files.length === 0) {
-                alert('Vui lòng chọn tệp trước!');
+                alert(currentLang === 'vi' ? 'Vui lòng chọn tệp trước!' : 'Please select a file first!');
                 return;
             }
 
@@ -243,27 +287,20 @@
                 else if (currentTool === 'compress') await handleCompressPdf(input.files[0]);
             } catch (err) {
                 console.error(err);
-                setStatus('❌ Có lỗi xảy ra: ' + err.message);
+                setStatus('❌ Error: ' + err.message);
             } finally {
                 btn.disabled = false;
                 btn.classList.remove('opacity-50');
             }
         }
 
-        // XÓA PHÔNG NỀN ẢNH (Xử lý thông minh trên Canvas)
         async function handleRemoveBackground(file) {
-            setStatus('⏳ Đang xử lý xóa phông nền ảnh...');
+            setStatus(currentLang === 'vi' ? '⏳ Đang xử lý xóa phông nền...' : '⏳ Removing background...');
             const imageBytes = await file.arrayBuffer();
-            
             const blob = new Blob([imageBytes]);
             const url = URL.createObjectURL(blob);
             const img = new Image();
-            
-            await new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = reject;
-                img.src = url;
-            });
+            await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
 
             const canvas = document.createElement('canvas');
             canvas.width = img.width;
@@ -273,55 +310,39 @@
 
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imgData.data;
-
-            // Thuật toán đơn giản nhận diện và loại bỏ nền đồng màu (ví dụ: nền trắng/sáng)
-            // Lấy mẫu màu ở 4 góc ảnh làm màu nền chuẩn cần xóa
             const sampleColor = { r: data[0], g: data[1], b: data[2] };
-            const threshold = 40; // Độ nhạy màu
+            const threshold = 40;
 
             for (let i = 0; i < data.length; i += 4) {
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-
-                // Nếu điểm ảnh gần giống màu nền mẫu, chuyển độ trong suốt alpha thành 0
-                const diff = Math.abs(r - sampleColor.r) + Math.abs(g - sampleColor.g) + Math.abs(b - sampleColor.b);
-                if (diff < threshold * 3) {
-                    data[i + 3] = 0; // Alpha = 0 (Trong suốt)
-                }
+                const diff = Math.abs(data[i] - sampleColor.r) + Math.abs(data[i+1] - sampleColor.g) + Math.abs(data[i+2] - sampleColor.b);
+                if (diff < threshold * 3) data[i+3] = 0;
             }
 
             ctx.putImageData(imgData, 0, 0);
-
             canvas.toBlob((b) => {
                 downloadBlob(b, file.name.replace(/\.[^/.]+$/, '') + '-no-bg.png');
-                setStatus('✅ Đã xóa phông nền và tải ảnh về thành công!');
+                setStatus(currentLang === 'vi' ? '✅ Xóa phông thành công!' : '✅ Background removed successfully!');
             }, 'image/png');
         }
 
         async function handleImagesToPdf(files) {
-            setStatus('⏳ Đang gộp ảnh thành PDF...');
+            setStatus(currentLang === 'vi' ? '⏳ Đang gộp ảnh thành PDF...' : '⏳ Converting images to PDF...');
             const pdfDoc = await PDFLib.PDFDocument.create();
 
             for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const imageBytes = await file.arrayBuffer();
-                const jpgBytes = await new Promise((resolve, reject) => {
+                const imageBytes = await files[i].arrayBuffer();
+                const jpgBytes = await new Promise((res, rej) => {
                     const blob = new Blob([imageBytes]);
                     const url = URL.createObjectURL(blob);
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0);
-                        canvas.toBlob((b) => b.arrayBuffer().then(resolve).catch(reject), 'image/jpeg', 0.9);
+                        canvas.width = img.width; canvas.height = img.height;
+                        canvas.getContext('2d').drawImage(img, 0, 0);
+                        canvas.toBlob((b) => b.arrayBuffer().then(res).catch(rej), 'image/jpeg', 0.9);
                     };
-                    img.onerror = reject;
-                    img.src = url;
+                    img.onerror = rej; img.src = url;
                 });
-
                 const embeddedImage = await pdfDoc.embedJpg(jpgBytes);
                 const dims = embeddedImage.scale(1);
                 const page = pdfDoc.addPage([dims.width, dims.height]);
@@ -329,12 +350,12 @@
             }
 
             const pdfBytes = await pdfDoc.save();
-            downloadBlob(new Blob([pdfBytes], { type: 'application/pdf' }), 'gop-nhieu-anh.pdf');
-            setStatus('✅ Đã gộp thành công tất cả ảnh thành file PDF!');
+            downloadBlob(new Blob([pdfBytes], { type: 'application/pdf' }), 'merged-images.pdf');
+            setStatus(currentLang === 'vi' ? '✅ Gộp ảnh thành PDF thành công!' : '✅ Images merged into PDF successfully!');
         }
 
         async function handlePdfToWord(file) {
-            setStatus('⏳ Đang trích xuất văn bản sang Word...');
+            setStatus(currentLang === 'vi' ? '⏳ Đang trích xuất sang Word...' : '⏳ Extracting text to Word...');
             const arrayBuffer = await file.arrayBuffer();
             const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
             const paragraphs = [];
@@ -343,20 +364,17 @@
                 const page = await pdf.getPage(i);
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(' ');
-                paragraphs.push(new docx.Paragraph({
-                    children: [new docx.TextRun(pageText)],
-                    spacing: { after: 200 }
-                }));
+                paragraphs.push(new docx.Paragraph({ children: [new docx.TextRun(pageText)], spacing: { after: 200 } }));
             }
 
             const doc = new docx.Document({ sections: [{ children: paragraphs }] });
             const blob = await docx.Packer.toBlob(doc);
             downloadBlob(blob, file.name.replace(/\.pdf$/i, '') + '.docx');
-            setStatus('✅ Đã chuyển sang Word thành công!');
+            setStatus(currentLang === 'vi' ? '✅ Đã chuyển sang Word thành công!' : '✅ Converted to Word successfully!');
         }
 
         async function handlePdfToExcel(file) {
-            setStatus('⏳ Đang trích xuất dữ liệu sang Excel...');
+            setStatus(currentLang === 'vi' ? '⏳ Đang trích xuất dữ liệu sang Excel...' : '⏳ Extracting tables to Excel...');
             const arrayBuffer = await file.arrayBuffer();
             const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
             const rows = [];
@@ -370,23 +388,20 @@
                     if (!lineMap[y]) lineMap[y] = [];
                     lineMap[y].push({ x: item.transform[4], text: item.str });
                 });
-
                 Object.keys(lineMap).sort((a, b) => b - a).forEach(y => {
-                    const sortedCols = lineMap[y].sort((a, b) => a.x - b.x).map(c => c.text);
-                    rows.push(sortedCols);
+                    rows.push(lineMap[y].sort((a, b) => a.x - b.x).map(c => c.text));
                 });
             }
 
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(rows);
-            XLSX.utils.book_append_sheet(wb, ws, 'DuLieuPDF');
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows), 'Data');
             const xlsxData = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
             downloadBlob(new Blob([xlsxData]), file.name.replace(/\.pdf$/i, '') + '.xlsx');
-            setStatus('✅ Đã xuất tệp Excel (.xlsx) thành công!');
+            setStatus(currentLang === 'vi' ? '✅ Xuất Excel thành công!' : '✅ Exported to Excel successfully!');
         }
 
         async function handlePdfToImages(file) {
-            setStatus('⏳ Đang chuyển các trang sang PNG và nén ZIP...');
+            setStatus(currentLang === 'vi' ? '⏳ Đang render trang sang ảnh và nén ZIP...' : '⏳ Rendering pages and zipping...');
             const arrayBuffer = await file.arrayBuffer();
             const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
             const zip = new JSZip();
@@ -395,98 +410,81 @@
                 const page = await pdf.getPage(i);
                 const viewport = page.getViewport({ scale: 2.0 });
                 const canvas = document.createElement('canvas');
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
+                canvas.width = viewport.width; canvas.height = viewport.height;
                 await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-
-                const dataUrl = canvas.toDataURL('image/png');
-                const base64Data = dataUrl.split(',')[1];
-                zip.file(`trang-${i}.png`, base64Data, { base64: true });
+                zip.file(`page-${i}.png`, canvas.toDataURL('image/png').split(',')[1], { base64: true });
             }
 
-            const zipBlob = await zip.generateAsync({ type: 'blob' });
-            downloadBlob(zipBlob, file.name.replace(/\.pdf$/i, '') + '-images.zip');
-            setStatus('✅ Đã tải gói ảnh ZIP thành công!');
+            downloadBlob(await zip.generateAsync({ type: 'blob' }), file.name.replace(/\.pdf$/i, '') + '-images.zip');
+            setStatus(currentLang === 'vi' ? '✅ Tải tệp ZIP thành công!' : '✅ Downloaded image zip successfully!');
         }
 
         async function handleMergePdf(files) {
             if (files.length < 2) {
-                alert('Vui lòng chọn ít nhất 2 tệp PDF để gộp!');
+                alert(currentLang === 'vi' ? 'Vui lòng chọn từ 2 file PDF trở lên!' : 'Please select at least 2 PDF files!');
                 return;
             }
-            setStatus('⏳ Đang gộp các tệp PDF...');
+            setStatus(currentLang === 'vi' ? '⏳ Đang gộp các file PDF...' : '⏳ Merging PDF files...');
             const mergedPdf = await PDFLib.PDFDocument.create();
 
             for (const file of files) {
-                const bytes = await file.arrayBuffer();
-                const pdf = await PDFLib.PDFDocument.load(bytes);
-                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-                copiedPages.forEach(page => mergedPdf.addPage(page));
+                const pdf = await PDFLib.PDFDocument.load(await file.arrayBuffer());
+                const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                pages.forEach(p => mergedPdf.addPage(p));
             }
 
-            const outBytes = await mergedPdf.save();
-            downloadBlob(new Blob([outBytes], { type: 'application/pdf' }), 'gop-tai-lieu.pdf');
-            setStatus(`✅ Đã gộp thành công ${files.length} tệp PDF!`);
+            downloadBlob(new Blob([await mergedPdf.save()], { type: 'application/pdf' }), 'merged.pdf');
+            setStatus(currentLang === 'vi' ? '✅ Gộp PDF thành công!' : '✅ PDFs merged successfully!');
         }
 
         async function handleSplitPdf(file) {
             const rangeStr = document.getElementById('splitRange').value.trim();
             if (!rangeStr) {
-                alert('Vui lòng nhập khoảng trang muốn tách (ví dụ: 1-2, 4)!');
+                alert(currentLang === 'vi' ? 'Vui lòng nhập khoảng trang cần tách!' : 'Please enter page range!');
                 return;
             }
-            setStatus('⏳ Đang tách trang PDF...');
-            const bytes = await file.arrayBuffer();
-            const srcPdf = await PDFLib.PDFDocument.load(bytes);
-            const totalPages = srcPdf.getPageCount();
-            const pageIndices = new Set();
+            setStatus(currentLang === 'vi' ? '⏳ Đang tách file PDF...' : '⏳ Splitting PDF...');
+            const srcPdf = await PDFLib.PDFDocument.load(await file.arrayBuffer());
+            const total = srcPdf.getPageCount();
+            const indices = new Set();
 
             rangeStr.split(',').forEach(part => {
-                const bounds = part.trim().split('-').map(Number);
-                if (bounds.length === 1 && bounds[0] >= 1 && bounds[0] <= totalPages) {
-                    pageIndices.add(bounds[0] - 1);
-                } else if (bounds.length === 2) {
-                    const start = Math.max(1, bounds[0]);
-                    const end = Math.min(totalPages, bounds[1]);
-                    for (let p = start; p <= end; p++) pageIndices.add(p - 1);
-                }
+                const b = part.trim().split('-').map(Number);
+                if (b.length === 1 && b[0] >= 1 && b[0] <= total) indices.add(b[0] - 1);
+                else if (b.length === 2) for (let p = Math.max(1, b[0]); p <= Math.min(total, b[1]); p++) indices.add(p - 1);
             });
 
             const newPdf = await PDFLib.PDFDocument.create();
-            const copied = await newPdf.copyPages(srcPdf, Array.from(pageIndices));
+            const copied = await newPdf.copyPages(srcPdf, Array.from(indices));
             copied.forEach(p => newPdf.addPage(p));
 
-            const outBytes = await newPdf.save();
-            downloadBlob(new Blob([outBytes], { type: 'application/pdf' }), 'tach-' + file.name);
-            setStatus(`✅ Đã tách ${pageIndices.size} trang thành công!`);
+            downloadBlob(new Blob([await newPdf.save()], { type: 'application/pdf' }), 'split-' + file.name);
+            setStatus(currentLang === 'vi' ? '✅ Tách PDF thành công!' : '✅ PDF split successfully!');
         }
 
         async function handleCompressPdf(file) {
             const quality = parseFloat(document.getElementById('compressLevel').value);
-            setStatus('⏳ Đang nén tệp PDF...');
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            setStatus(currentLang === 'vi' ? '⏳ Đang nén file PDF...' : '⏳ Compressing PDF...');
+            const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
             const outPdf = await PDFLib.PDFDocument.create();
 
             for (let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
                 const viewport = page.getViewport({ scale: 1.3 });
                 const canvas = document.createElement('canvas');
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
+                canvas.width = viewport.width; canvas.height = viewport.height;
                 await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
 
-                const jpgDataUrl = canvas.toDataURL('image/jpeg', quality);
-                const jpgImage = await outPdf.embedJpg(jpgDataUrl);
+                const img = await outPdf.embedJpg(canvas.toDataURL('image/jpeg', quality));
                 const newPage = outPdf.addPage([viewport.width, viewport.height]);
-                newPage.drawImage(jpgImage, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+                newPage.drawImage(img, { x: 0, y: 0, width: viewport.width, height: viewport.height });
             }
 
             const outBytes = await outPdf.save();
             const oldKB = (file.size / 1024).toFixed(1);
             const newKB = (outBytes.byteLength / 1024).toFixed(1);
-            downloadBlob(new Blob([outBytes], { type: 'application/pdf' }), 'nen-' + file.name);
-            setStatus(`✅ Hoàn tất! Giảm từ ${oldKB} KB xuống ${newKB} KB.`);
+            downloadBlob(new Blob([outBytes], { type: 'application/pdf' }), 'compressed-' + file.name);
+            setStatus(currentLang === 'vi' ? `✅ Nén thành công từ ${oldKB} KB xuống ${newKB} KB!` : `✅ Compressed from ${oldKB} KB to ${newKB} KB!`);
         }
     </script>
 </body>

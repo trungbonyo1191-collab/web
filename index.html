@@ -16,6 +16,7 @@
     <style>
         .tool-card { transition: all 0.2s ease; }
         .tool-card.active { border-color: #3b82f6; background-color: #eff6ff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12); }
+        .drag-over { border-color: #3b82f6 !important; background-color: #eff6ff !important; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
@@ -95,10 +96,17 @@
             <h2 id="panel-title" class="text-xl font-bold text-slate-900">Background Remover</h2>
             <p id="panel-desc" class="text-sm text-slate-500 mt-1 mb-5">Upload an image to automatically isolate the foreground subject.</p>
 
-            <!-- File Upload Zone -->
-            <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-blue-500 transition bg-slate-50/50">
-                <input type="file" id="fileInput" accept="image/*" class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mx-auto max-w-md">
-                <p id="file-hint" class="text-xs text-slate-400 mt-2">Select 1 image file (JPG, PNG, WebP)</p>
+            <!-- Drag & Drop Upload Zone -->
+            <div id="dropZone" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-blue-500 transition bg-slate-50/50 cursor-pointer">
+                <input type="file" id="fileInput" accept="image/*" class="hidden" onchange="handleFileSelect(this.files)">
+                <div class="flex flex-col items-center justify-center">
+                    <svg class="w-12 h-12 text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <p id="drop-text" class="text-sm font-medium text-slate-700">Drag & drop files here, or <span class="text-blue-600 underline">browse</span></p>
+                    <p id="file-hint" class="text-xs text-slate-400 mt-2">Select 1 image file (JPG, PNG, WebP)</p>
+                    <p id="selectedFileName" class="text-xs font-semibold text-emerald-600 mt-3"></p>
+                </div>
             </div>
 
             <!-- Custom Options for Split PDF -->
@@ -132,6 +140,7 @@
 
         let currentLang = 'en';
         let currentTool = 'removebg';
+        let selectedFilesObject = null;
 
         const i18n = {
             en: {
@@ -140,6 +149,7 @@
                 mainSub: "Professional document & multimedia utilities. 100% Client-side privacy.",
                 badgeText: "100% Secure & Private",
                 runBtn: "Process File",
+                dropText: "Drag & drop files here, or browse",
                 t_removebg: "Background Remover", d_removebg: "Extract subject and make transparent PNG.",
                 t_img2pdf: "Images to PDF", d_img2pdf: "Merge multiple images into a single PDF.",
                 t_word: "PDF to Word", d_word: "Convert PDF text layout into editable DOCX.",
@@ -149,11 +159,11 @@
                 t_split: "Split PDF", d_split: "Extract specific pages or page ranges.",
                 t_compress: "Compress PDF", d_compress: "Reduce file size optimizing inner elements.",
                 hint_removebg: "Select 1 image file (JPG, PNG, WebP)",
-                hint_img2pdf: "Hold Ctrl (or Cmd) to select multiple images",
+                hint_img2pdf: "Select multiple images to merge into PDF",
                 hint_word: "Select 1 PDF file to convert to Word",
                 hint_excel: "Select 1 PDF file containing tables",
                 hint_image: "Select 1 PDF file to export pages as images",
-                hint_merge: "Hold Ctrl (or Cmd) to select multiple PDF files",
+                hint_merge: "Select multiple PDF files to combine",
                 hint_split: "Select 1 PDF file and specify page ranges below",
                 hint_compress: "Select 1 PDF file to reduce size",
                 lblSplit: "Enter page range (e.g., 1-3, 5):",
@@ -168,6 +178,7 @@
                 mainSub: "Hệ sinh thái xử lý tài liệu & đa phương tiện chuyên nghiệp. Bảo mật 100% trên trình duyệt.",
                 badgeText: "Bảo mật tuyệt đối — Chạy trên máy",
                 runBtn: "Bắt đầu xử lý",
+                dropText: "Kéo & thả tệp vào đây, hoặc nhấn để chọn",
                 t_removebg: "Xóa Phông Nền Ảnh", d_removebg: "Tách nền ảnh, tạo ảnh trong suốt tự động.",
                 t_img2pdf: "Ảnh sang PDF", d_img2pdf: "Gộp nhiều ảnh thành 1 file PDF duy nhất.",
                 t_word: "PDF sang Word", d_word: "Chuyển tài liệu PDF thành tệp DOCX chỉnh sửa được.",
@@ -177,11 +188,11 @@
                 t_split: "Tách PDF", d_split: "Tách trang theo khoảng tùy chọn.",
                 t_compress: "Nén PDF", d_compress: "Giảm dung lượng PDF trực tiếp.",
                 hint_removebg: "Chọn 1 tệp ảnh (JPG, PNG, WebP)",
-                hint_img2pdf: "Giữ phím Ctrl (hoặc Cmd) để chọn nhiều ảnh",
+                hint_img2pdf: "Chọn nhiều ảnh để gộp thành file PDF",
                 hint_word: "Chọn 1 tệp PDF để chuyển sang Word",
                 hint_excel: "Chọn 1 tệp PDF chứa bảng dữ liệu",
                 hint_image: "Chọn 1 tệp PDF để xuất ảnh từng trang",
-                hint_merge: "Giữ phím Ctrl (hoặc Cmd) để chọn nhiều tệp PDF",
+                hint_merge: "Chọn nhiều tệp PDF để kết hợp",
                 hint_split: "Chọn 1 tệp PDF và nhập số trang",
                 hint_compress: "Chọn 1 tệp PDF cần giảm dung lượng",
                 lblSplit: "Nhập khoảng trang muốn tách (ví dụ: 1-3, 5):",
@@ -203,6 +214,44 @@
             compress: { accept: 'application/pdf', multiple: false }
         };
 
+        // Setup Drag & Drop Events
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files && files.length > 0) {
+                handleFileSelect(files);
+            }
+        }, false);
+
+        function handleFileSelect(files) {
+            selectedFilesObject = files;
+            const fileNameDisplay = document.getElementById('selectedFileName');
+            if (files.length === 1) {
+                fileNameDisplay.innerText = `📂 Selected: ${files[0].name}`;
+            } else {
+                fileNameDisplay.innerText = `📂 Selected: ${files.length} files`;
+            }
+        }
+
         function switchLanguage(lang) {
             currentLang = lang;
             const dict = i18n[lang];
@@ -211,16 +260,15 @@
             document.getElementById('main-sub').innerText = dict.mainSub;
             document.getElementById('badge-text').innerText = dict.badgeText;
             document.getElementById('runBtn').innerText = dict.runBtn;
+            document.getElementById('drop-text').innerHTML = dict.dropText.replace('browse', `<span class="text-blue-600 underline">${lang === 'vi' ? 'chọn' : 'browse'}</span>`);
             document.getElementById('lbl-split').innerText = dict.lblSplit;
             document.getElementById('lbl-compress').innerText = dict.lblCompress;
 
-            // Update card texts
             Object.keys(dict).forEach(key => {
                 const el = document.querySelector(`[data-i18n="${key}"]`);
                 if (el) el.innerText = dict[key];
             });
 
-            // Update hint
             updateUIState();
         }
 
@@ -233,6 +281,8 @@
             document.getElementById('panel-title').innerText = dict['t_' + tool];
             document.getElementById('panel-desc').innerText = dict['d_' + tool];
 
+            selectedFilesObject = null;
+            document.getElementById('selectedFileName').innerText = '';
             updateUIState();
             document.getElementById('statusText').innerText = '';
         }
@@ -240,11 +290,8 @@
         function updateUIState() {
             const dict = i18n[currentLang];
             document.getElementById('file-hint').innerText = dict['hint_' + currentTool] || '';
-
-            const input = document.getElementById('fileInput');
-            input.value = '';
-            input.accept = toolConfig[currentTool].accept;
-            input.multiple = toolConfig[currentTool].multiple;
+            fileInput.accept = toolConfig[currentTool].accept;
+            fileInput.multiple = toolConfig[currentTool].multiple;
 
             document.getElementById('opt-split').classList.toggle('hidden', currentTool !== 'split');
             document.getElementById('opt-compress').classList.toggle('hidden', currentTool !== 'compress');
@@ -266,9 +313,9 @@
         }
 
         async function runTool() {
-            const input = document.getElementById('fileInput');
-            if (!input.files || input.files.length === 0) {
-                alert(currentLang === 'vi' ? 'Vui lòng chọn tệp trước!' : 'Please select a file first!');
+            const files = selectedFilesObject || fileInput.files;
+            if (!files || files.length === 0) {
+                alert(currentLang === 'vi' ? 'Vui lòng chọn hoặc kéo thả tệp trước!' : 'Please select or drop a file first!');
                 return;
             }
 
@@ -277,14 +324,14 @@
             btn.classList.add('opacity-50');
 
             try {
-                if (currentTool === 'removebg') await handleRemoveBackground(input.files[0]);
-                else if (currentTool === 'img2pdf') await handleImagesToPdf(input.files);
-                else if (currentTool === 'word') await handlePdfToWord(input.files[0]);
-                else if (currentTool === 'excel') await handlePdfToExcel(input.files[0]);
-                else if (currentTool === 'image') await handlePdfToImages(input.files[0]);
-                else if (currentTool === 'merge') await handleMergePdf(input.files);
-                else if (currentTool === 'split') await handleSplitPdf(input.files[0]);
-                else if (currentTool === 'compress') await handleCompressPdf(input.files[0]);
+                if (currentTool === 'removebg') await handleRemoveBackground(files[0]);
+                else if (currentTool === 'img2pdf') await handleImagesToPdf(files);
+                else if (currentTool === 'word') await handlePdfToWord(files[0]);
+                else if (currentTool === 'excel') await handlePdfToExcel(files[0]);
+                else if (currentTool === 'image') await handlePdfToImages(files[0]);
+                else if (currentTool === 'merge') await handleMergePdf(files);
+                else if (currentTool === 'split') await handleSplitPdf(files[0]);
+                else if (currentTool === 'compress') await handleCompressPdf(files[0]);
             } catch (err) {
                 console.error(err);
                 setStatus('❌ Error: ' + err.message);

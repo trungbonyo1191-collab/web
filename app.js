@@ -1,5 +1,5 @@
 'use strict';
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
 
 // ---------- Cấu hình & giới hạn ----------
 const MAX_MB = 100, MAX_FILES = 50, MAX_PAGES = 300, MAX_PIXELS = 50e6, MAX_RENDER_PIXELS = 16e6;

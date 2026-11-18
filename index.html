@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>OmniTools</title>
+  <script type="module" crossorigin src="./index.js"></script>
+  <link rel="stylesheet" crossorigin href="./index.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 border-b border-slate-200 pb-6">
+    <div>
+      <h1 data-ui="heading" class="text-3xl font-extrabold text-slate-900 tracking-tight"></h1>
+      <p data-ui="sub" class="text-slate-500 mt-1"></p>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-3.5 py-2 rounded-full">🔒 <span data-ui="badge"></span></span>
+      <select id="langSelect" aria-label="Language" class="bg-white border border-slate-300 text-slate-700 text-xs font-semibold rounded-lg px-3 py-2">
+        <option value="en">English</option>
+        <option value="vi">Tiếng Việt</option>
+      </select>
+    </div>
+  </header>
+
+  <nav id="tools" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8"></nav>
+
+  <main class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+    <h2 id="panelTitle" class="text-xl font-bold text-slate-900"></h2>
+    <p id="panelDesc" class="text-sm text-slate-500 mt-1 mb-5"></p>
+
+    <div id="dropZone" role="button" tabindex="0" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-blue-500 transition bg-slate-50/50 cursor-pointer focus:outline-none focus:border-blue-500">
+      <input type="file" id="fileInput" class="hidden">
+      <p data-ui="drop" class="text-sm font-medium text-slate-700"></p>
+      <p id="fileHint" class="text-xs text-slate-500 mt-2"></p>
+      <p id="fileName" class="text-xs font-semibold text-emerald-700 mt-3"></p>
+    </div>
+
+    <div id="optSplit" class="hidden mt-4">
+      <label for="splitRange" data-ui="lblSplit" class="block text-sm font-medium text-slate-700 mb-1"></label>
+      <input type="text" id="splitRange" placeholder="1-3, 5" class="w-full md:w-80 border border-slate-300 rounded-lg px-3 py-2 text-sm">
+    </div>
+    <div id="optCompress" class="hidden mt-4">
+      <label for="compressLevel" data-ui="lblCompress" class="block text-sm font-medium text-slate-700 mb-1"></label>
+      <select id="compressLevel" class="w-full md:w-80 border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white">
+        <option value="0.75" data-ui="optLow"></option>
+        <option value="0.5" data-ui="optMed" selected></option>
+        <option value="0.3" data-ui="optHigh"></option>
+      </select>
+    </div>
+
+    <div id="bar" class="hidden mt-6 h-2 bg-slate-200 rounded-full overflow-hidden"><div id="barFill" class="h-2 bg-blue-600 rounded-full transition-all" style="width:0"></div></div>
+    <div class="mt-6 flex flex-wrap items-center gap-4">
+      <button type="button" id="runBtn" data-ui="run" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition shadow-sm disabled:opacity-50"></button>
+      <button type="button" id="cancelBtn" data-ui="cancel" class="hidden border border-slate-300 text-slate-700 font-semibold px-5 py-2.5 rounded-xl hover:bg-slate-100"></button>
+      <span id="status" role="status" aria-live="polite" class="text-sm text-slate-600 font-medium"></span>
+    </div>
+  </main>
+</div>
+</body>
+</html>
